@@ -53,7 +53,7 @@ import org.springframework.util.Assert;
  */
 public class AnnotationConfigApplicationContext extends GenericApplicationContext implements AnnotationConfigRegistry {
 
-
+	/** 读取main函数中指定的配置类 */
 	private final AnnotatedBeanDefinitionReader reader;
 
 	private final ClassPathBeanDefinitionScanner scanner;
@@ -85,7 +85,9 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 * {@link Configuration @Configuration} classes
 	 */
 	public AnnotationConfigApplicationContext(Class<?>... componentClasses) {
+		// 定义reader，reader构造函数里面 注册创世纪类的bean定义
 		this();
+		// 通过reader把componentClasses注册成bean定义
 		register(componentClasses);
 		refresh();
 	}
