@@ -517,9 +517,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	public void refresh() throws BeansException, IllegalStateException {
 		synchronized (this.startupShutdownMonitor) {
 			// Prepare this context for refreshing.
+			//没做什么实际工作
 			prepareRefresh();
 
 			// Tell the subclass to refresh the internal bean factory.
+			// 对于AnnotationConfigApplicationContext来说，前面的步骤中已经创建了beanFactory，所以该方法其实什么也不做
+			// 对于ClassPathXmlApplicationContext来说，会创建beanFactory，解析xml文件，将所有的bean生成bean定义
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			// Prepare the bean factory for use in this context.
@@ -527,12 +530,19 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 			try {
 				// Allows post-processing of the bean factory in context subclasses.
+				// 对于非web程序来说，一般不处理
 				postProcessBeanFactory(beanFactory);
 
 				// Invoke factory processors registered as beans in the context.
+				// 调用bean工厂后置处理器，这些后置处理器包括spring内部注册的，也包括用户自定义实现BeanFactoryPostProcessor接口的
+				// 对于AnnotationConfigApplicationContext来说
+				// 1、获取ConfigurationClassPostProcessor的bean
+				// 2、处理有@Configuration注解的类及@Componment注解配置到的相关扫描到的类，注册成bean定义
+				// 3、获取自定义的工厂后置处理器，生成bean,并调用，用来处理bean定义
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
+				// 此处只是把所有的beanPostProcessor生成bean，但没有调用这些对象，这些对象是在普通bean创建的时候被调用的
 				registerBeanPostProcessors(beanFactory);
 
 				// Initialize message source for this context.
@@ -542,6 +552,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				initApplicationEventMulticaster();
 
 				// Initialize other special beans in specific context subclasses.
+				// 对于非web程序来说，一般不处理
 				onRefresh();
 
 				// Check for listener beans and register them.
@@ -635,6 +646,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * @see #getBeanFactory()
 	 */
 	protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {
+		// 对于AnnotationConfigApplicationContext来说，前面的步骤中已经创建了beanFactory，所以该方法其实什么也不做
+		// 对于ClassPathXmlApplicationContext来说，会创建beanFactory，解析xml文件，将所有的bean生成bean定义
 		refreshBeanFactory();
 		return getBeanFactory();
 	}
