@@ -64,6 +64,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 * through {@link #register} calls and then manually {@linkplain #refresh refreshed}.
 	 */
 	public AnnotationConfigApplicationContext() {
+		// 注册创世纪类的bean定义，创建StandEnvironmen【此时会加载环境变量和系统属性】
 		this.reader = new AnnotatedBeanDefinitionReader(this);
 		this.scanner = new ClassPathBeanDefinitionScanner(this);
 	}
@@ -85,9 +86,9 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 * {@link Configuration @Configuration} classes
 	 */
 	public AnnotationConfigApplicationContext(Class<?>... componentClasses) {
-		// 定义reader，reader构造函数里面 注册创世纪类的bean定义
+		// 定义reader，reader构造函数里面 注册创世纪类的bean定义，创建StandEnvironment
 		this();
-		// 通过reader把componentClasses注册成bean定义
+		// 通过reader把componentClasses注册成bean定义  即使类上没有加任何注解，最终也是会被处理成bean的
 		register(componentClasses);
 		refresh();
 	}

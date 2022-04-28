@@ -120,11 +120,13 @@ abstract class ConfigurationClassUtils {
 				return false;
 			}
 		}
-
+		//类含有@Configuration注解，则config不为空，否则config为空
 		Map<String, Object> config = metadata.getAnnotationAttributes(Configuration.class.getName());
 		if (config != null && !Boolean.FALSE.equals(config.get("proxyBeanMethods"))) {
+			// 用来表明是否创建成代理方式
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_FULL);
 		}
+		// 如果不包含@Configuration，但包含了其它几种指定的注解，也是可以作为ConfigruationClass继续后续处理的
 		else if (config != null || isConfigurationCandidate(metadata)) {
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_LITE);
 		}
