@@ -304,7 +304,7 @@ class ConfigurationClassParser {
 					if (bdCand == null) {
 						bdCand = holder.getBeanDefinition();
 					}
-					// @ComponentScan扫描的组件中，可能有些组件包含了@Configuration注解，这些组件需要再次进行处理
+					// @ComponentScan扫描的组件中，如果组件符合配置类的条件，则会继续进行处理该配置类
 					if (ConfigurationClassUtils.checkConfigurationClassCandidate(bdCand, this.metadataReaderFactory)) {
 						parse(bdCand.getBeanClassName(), holder.getBeanName());
 					}

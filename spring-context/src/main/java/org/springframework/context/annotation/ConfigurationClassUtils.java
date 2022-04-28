@@ -74,6 +74,8 @@ abstract class ConfigurationClassUtils {
 
 
 	/**
+	 * 组件是否是配置类
+	 * 包括有@Configuration注解，@Component，@ComponentScan，@Import，@ImportResource，有@Bean方法的类都符合定义
 	 * Check whether the given bean definition is a candidate for a configuration class
 	 * (or a nested component class declared within a configuration/component class,
 	 * to be auto-registered as well), and mark it accordingly.

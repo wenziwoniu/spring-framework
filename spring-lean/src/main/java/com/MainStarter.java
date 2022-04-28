@@ -9,31 +9,28 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
- * 只有一个bean有@Component注解[其它注解包含它也可以]，才会继续处理她的ComponentScan等注解
- * @Import引入的类，即使不加任何注解，也会变成bean,如果加了@Configuration注解，则会处理其它的注解，例如ComponentScan
+ * 1、对于AnnotationConfigApplicationContext的参数类来说，即使不加任何注解，也会变成bean
+ * 2、如果参数类有@Configuration注解，则会被ConfigruationPost当做配置类进行处理【生成对应的代理对象】
+ * 3、如果参数类没有@Configuration注解，但是有@Compoment @ComponentScan @Impor @ImportSource 或者有@Bean的方法
+ * 则也会被ConfigruationPost当做配置类进行处理【不会生成对应的代理对象】
+ *
+ * 配置类对象：@Configuration注解，或有@Compoment @ComponentScan @Impor @ImportSource 或者有@Bean的方法的bean都会被当做配置类
+ * 进而可以解析其ComponentScan注解
+ *
+ * @Import引入的类，即使不加任何注解，也会变成bean,如果加了@Configuration等注解，则会被当做配置类，则会处理引入的类其它的注解，例如ComponentScan
+ *
+ * 虽然@ComponentScans注解的class文件是ComponentScan数组，但注解判断时，并不会当做ComponentScan注解，也就是如果只有@ComponentScans注解，是不会当做配置类
+ * 进行处理，也就不会扫描其其指定的包
+ *
  */
-@Configuration
-//	@Service
-//@ComponentScan("com.comonent")
-//@ComponentScan("com.comonent")
-//@ComponentScan("com.comonent")
-@ComponentScans(value = {@ComponentScan("com")})
-//@ComponentScans(value = {@ComponentScan("com.config"), @ComponentScan("com.selfdefine"), @ComponentScan("#{pacakages}")})
-//@ComponentScans(value = {@ComponentScan("com.config"), @ComponentScan("com.selfdefine"), @ComponentScan("#{pacakages}")})
-//@PropertySource(value = "${namejdbc}.properties")
-//@PropertySource(value = "jdbc.properties")
-//@PropertySources(value = {@PropertySource(value = "jdbc2.properties"),@PropertySource(value = "jdbc3.properties")})
-//@PropertySources(value = {@PropertySource(value = "jdbc4.properties")})
-//@Conditional()
-//@Import(value = {UserController.class})
+@ComponentScans(value = {@ComponentScan(value = "com.selfdefine")})
 public class MainStarter {
 
 	public static void main(String[] args) {
 		// 对于构造函数参数来说，即使类上没有加任何注解，也是会被处理成bean的
-
- 		ApplicationContext context=new AnnotationConfigApplicationContext(MainStarter.class);
-		UserServiceImpl bean = context.getBean(UserServiceImpl.class);
-		bean.say();
-		System.out.println("aed");
+ 		ApplicationContext context = new AnnotationConfigApplicationContext(MainStarter.class);
+//		UserServiceImpl bean = context.getBean(UserServiceImpl.class);
+//		bean.say();
+		System.out.println("++++++++++++++++++++");
 	}
 }

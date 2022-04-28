@@ -265,7 +265,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	public void processConfigBeanDefinitions(BeanDefinitionRegistry registry) {
 		List<BeanDefinitionHolder> configCandidates = new ArrayList<>();
 		String[] candidateNames = registry.getBeanDefinitionNames();
-
+		// 此处的bean定义主要是创世纪类和AnnotationConfigApplicationContext的参数类
 		for (String beanName : candidateNames) {
 			BeanDefinition beanDef = registry.getBeanDefinition(beanName);
 			if (beanDef.getAttribute(ConfigurationClassUtils.CONFIGURATION_CLASS_ATTRIBUTE) != null) {
@@ -274,6 +274,8 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 				}
 			}
 			// 只有main函数里配置的那个类才符合条件
+			// 检查一个类是不是有资格成为配置类，@Configuration注解，或者有@Compoment @ComponentScan @Impor @ImportSource 或者有@Bean的方法
+			// 的类才可以有这个资格
 			else if (ConfigurationClassUtils.checkConfigurationClassCandidate(beanDef, this.metadataReaderFactory)) {
 				configCandidates.add(new BeanDefinitionHolder(beanDef, beanName));
 			}

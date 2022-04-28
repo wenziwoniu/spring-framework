@@ -11,7 +11,6 @@ public class UserServiceImpl {
 	@Autowired
 	private UserDao userDao;
 
-	@Value("#{jdbcurl}")
 	private String jdbcurl;
 
 	public void say() {
