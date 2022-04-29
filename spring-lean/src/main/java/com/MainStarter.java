@@ -23,7 +23,10 @@ import org.springframework.stereotype.Service;
  * 进行处理，也就不会扫描其其指定的包
  *
  */
-@ComponentScans(value = {@ComponentScan(value = "com.selfdefine")})
+@Configuration
+@ComponentScan(value = "com.selfdefine")
+@PropertySource(value = "jdbc.properties")
+//@ComponentScans(value = {@ComponentScan(value = "com.selfdefine")})
 public class MainStarter {
 
 	public static void main(String[] args) {
