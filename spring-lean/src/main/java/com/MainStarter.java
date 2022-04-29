@@ -1,5 +1,7 @@
 package com;
 
+import com.context.ApplicationContextAutowired;
+import com.contextware.ContextWare;
 import com.selfdefine.controller.UserController;
 import com.selfdefine.dao.UserDao;
 import com.selfdefine.service.UserServiceImpl;
@@ -24,7 +26,7 @@ import org.springframework.stereotype.Service;
  *
  */
 @Configuration
-@ComponentScan(value = "com.selfdefine")
+@ComponentScan(value = {"com.selfdefine","com.context","com.contextware"})
 @PropertySource(value = "jdbc.properties")
 //@ComponentScans(value = {@ComponentScan(value = "com.selfdefine")})
 public class MainStarter {
@@ -33,6 +35,8 @@ public class MainStarter {
 		// 对于构造函数参数来说，即使类上没有加任何注解，也是会被处理成bean的
  		ApplicationContext context = new AnnotationConfigApplicationContext(MainStarter.class);
 		UserController controller = context.getBean(UserController.class);
+		ContextWare contextWare = context.getBean(ContextWare.class);
+		ApplicationContextAutowired applicationContextAutowired = context.getBean(ApplicationContextAutowired.class);
 //		UserServiceImpl bean = context.getBean(UserServiceImpl.class);
 //		bean.say();
 		System.out.println("++++++++++++++++++++");
