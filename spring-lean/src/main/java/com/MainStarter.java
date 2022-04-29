@@ -35,6 +35,7 @@ public class MainStarter {
 		// 对于构造函数参数来说，即使类上没有加任何注解，也是会被处理成bean的
  		ApplicationContext context = new AnnotationConfigApplicationContext(MainStarter.class);
 		UserController controller = context.getBean(UserController.class);
+		controller.print();
 		ContextWare contextWare = context.getBean(ContextWare.class);
 		ApplicationContextAutowired applicationContextAutowired = context.getBean(ApplicationContextAutowired.class);
 //		UserServiceImpl bean = context.getBean(UserServiceImpl.class);
