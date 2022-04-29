@@ -32,6 +32,7 @@ public class MainStarter {
 	public static void main(String[] args) {
 		// 对于构造函数参数来说，即使类上没有加任何注解，也是会被处理成bean的
  		ApplicationContext context = new AnnotationConfigApplicationContext(MainStarter.class);
+		UserController controller = context.getBean(UserController.class);
 //		UserServiceImpl bean = context.getBean(UserServiceImpl.class);
 //		bean.say();
 		System.out.println("++++++++++++++++++++");

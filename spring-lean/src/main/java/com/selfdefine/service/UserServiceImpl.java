@@ -11,9 +11,6 @@ public class UserServiceImpl {
 	@Autowired
 	private UserDao userDao;
 
-	@Value("${name}")
-	private String jdbcurl;
-
 	public void say() {
 		System.out.println("你好呀是是是");
 	}
