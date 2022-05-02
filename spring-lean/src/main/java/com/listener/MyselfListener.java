@@ -2,17 +2,15 @@ package com.listener;
 
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MyselfListener {
+public class MyselfListener implements ApplicationListener<ContextRefreshedEvent> {
 
-//	@Override
-//	public void onApplicationEvent(ApplicationEvent event) {
-//
-//		if (event != null) {
-//			System.out.println("监听器事件");
-//
-//		}
-//	}
+	@Override
+	public void onApplicationEvent(ContextRefreshedEvent event) {
+
+		System.out.println("jiantingqibeidiaoyong监听器被调用");
+	}
 }

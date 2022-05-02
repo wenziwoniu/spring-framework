@@ -393,7 +393,7 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 	}
 
 	/**
-	 * 处理@Autowired注解，将符合条件的引用bean设置到对应的bean字段上
+	 * 处理Autowired注解，将符合条件的引用bean设置到对应的bean字段之上
 	 * @param pvs
 	 * @param bean
 	 * @param beanName
