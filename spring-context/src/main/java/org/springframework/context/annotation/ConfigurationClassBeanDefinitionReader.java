@@ -136,15 +136,19 @@ class ConfigurationClassBeanDefinitionReader {
 			this.importRegistry.removeImportingClass(configClass.getMetadata().getClassName());
 			return;
 		}
-
+		// 对于通过@Import引入的没有实现接口的，会在例如被注册成bean定义
 		if (configClass.isImported()) {
 			registerBeanDefinitionForImportedConfigurationClass(configClass);
 		}
+		// 将配置类里的@Bean方法注册成bean定义
 		for (BeanMethod beanMethod : configClass.getBeanMethods()) {
 			loadBeanDefinitionsForBeanMethod(beanMethod);
 		}
 
 		loadBeanDefinitionsFromImportedResources(configClass.getImportedResources());
+		// 处理通过@Import引入并实现了ImportBeanDefinitionRegist接口的bean
+		// 例如@EnableAspectJAutoProxy  AspectJAutoProxyRegistrar实现了下面的接口，通过调用该类，将AnnotationAwareAspectJAutoProxyCreator注册成bean定义【还没有形成bean】
+		// AspectJAutoProxyRegistrar本身不会成为bean定义
 		loadBeanDefinitionsFromRegistrars(configClass.getImportBeanDefinitionRegistrars());
 	}
 

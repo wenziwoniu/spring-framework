@@ -334,6 +334,8 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 						this.importBeanNameGenerator, parser.getImportRegistry());
 			}
 			// 将各种组件类变成bean定义【包括@Bean方法】，对于使用@import引入的对象，也变成bean定义
+			// 通过@Import引入的实现了ImportBeanDifinitionRegist的bean在前面的步骤中被放入Map中，后续读取该map来解析成bean定义
+			// 通过@Import引入的没有实现接口的bean会作为配置类在configClasses里面
 			this.reader.loadBeanDefinitions(configClasses);
 			alreadyParsed.addAll(configClasses);
 

@@ -157,6 +157,7 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 		Object oldProxy = null;
 		boolean setProxyContext = false;
 
+		// 每个类在创建代理类时，拥有哪几个advisior是统计好的，只会缓存和本类对应的advisiors
 		TargetSource targetSource = this.advised.targetSource;
 		Object target = null;
 
@@ -193,6 +194,8 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 			Class<?> targetClass = (target != null ? target.getClass() : null);
 
 			// Get the interception chain for this method.
+			// 获取本方法所对应的advisior并转换为拦截器链路
+			// 即使方法没有任何匹配的advisior，也会有一个ExposeInvocationInterceptor，这样才可以走后面的调用链调用原始方法
 			List<Object> chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);
 
 			// Check whether we have any advice. If we don't, we can fallback on direct

@@ -21,14 +21,17 @@ import org.springframework.stereotype.Service;
  * 进而可以解析其ComponentScan注解
  *
  * @Import引入的类，即使不加任何注解，也会变成bean,如果加了@Configuration等注解，则会被当做配置类，则会处理引入的类其它的注解，例如ComponentScan
+ * @Import引入的对象会在所有的其它扫描的bean定义被处理后才被处理
+ *
  *
  * 虽然@ComponentScans注解的class文件是ComponentScan数组，但注解判断时，并不会当做ComponentScan注解，也就是如果只有@ComponentScans注解，是不会当做配置类
  * 进行处理，也就不会扫描其其指定的包
  *
  */
 @Configuration
-@ComponentScan(value = {"com"})
-@PropertySource(value = "jdbc.properties")
+//@ComponentScan(value = {"com"})
+//@PropertySource(value = "jdbc.properties")
+@EnableAspectJAutoProxy
 //@ComponentScans(value = {@ComponentScan(value = "com.selfdefine")})
 public class MainStarter {
 

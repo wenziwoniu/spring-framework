@@ -295,7 +295,8 @@ class ConfigurationClassParser {
 			// @Config注解的类可能会有多个ComponentScan注解，循环处理这些注解
 			for (AnnotationAttributes componentScan : componentScans) {
 				// The config class is annotated with @ComponentScan -> perform the scan immediately
-				// 将@ComponentScan指定的包下面的符合条件的类注册成bean定义
+				// 将@ComponentScan指定的包下面的符合条件的类注册成bean定义 例如有@Configuration @Component注解，
+				// 如果只有@Import注解，则不会被扫描到，也就不会被下面的processImports处理
 				Set<BeanDefinitionHolder> scannedBeanDefinitions =
 						this.componentScanParser.parse(componentScan, sourceClass.getMetadata().getClassName());
 				// Check the set of scanned definitions for any further config classes and parse recursively if needed
@@ -313,6 +314,9 @@ class ConfigurationClassParser {
 		}
 
 		// Process any @Import annotations
+		// getImports循环收集配置类上的@Import注解所引入的类，可以直接使用@Import，也可以是某注解类上的@Import
+		// 对于@Import引入的类，如果没有实现ImportSelect和ImportBeanDefinitionRegest，则会被当做一个配置类继续处理
+		// 实现了ImportBeanDefinitionRegest的，会暂时放入map中后续注册成bean定义
 		processImports(configClass, sourceClass, getImports(sourceClass), filter, true);
 
 		// Process any @ImportResource annotations

@@ -503,6 +503,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		try {
 			// Give BeanPostProcessors a chance to return a proxy instead of the target bean instance.
+			// 对于面向切面来说，此处会调用AnnotationAwareAspectJAutoProxyCreator的相应方法
+			// 1、解析有@Aespce注解的bean定义【还没有形成bean】
+			// 2、解析@Aespce的advice和poincut形成advisor并缓存
+			// 这里并不会创建代理对象，而是在bean init方法被执行后才创建代理对象
 			Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
 			if (bean != null) {
 				return bean;
@@ -598,7 +602,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			populateBean(beanName, mbd, instanceWrapper);
 			// 调用beanPostProcessor.postProcessBeforeInitialization
 			// 调用初始化方法
-			// 调用beanPostProcessor.postProcessAfterInitialization
+			// 调用beanPostProcessor.postProcessAfterInitialization【例如创建代理对象】
 			exposedObject = initializeBean(beanName, exposedObject, mbd);
 		}
 		catch (Throwable ex) {
@@ -1807,6 +1811,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 					beanName, "Invocation of init method failed", ex);
 		}
 		if (mbd == null || !mbd.isSynthetic()) {
+			// 判断bean是否需要创建代理对象，如果需要则创建代理对象
 			wrappedBean = applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName);
 		}
 
